@@ -1,0 +1,226 @@
+<!doctype html><html lang="it"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>CLUBBIN&rsquo;CAVA</title>
+<meta name="description" content="CC026 &middot; 29 agosto 2026 &middot; Cava dell'Erba / Stilmarmo, Apricena, Puglia.">
+<link rel="icon" href="data:,">
+<meta property="og:title" content="CLUBBIN&rsquo;CAVA">
+<meta property="og:description" content="CC026 &middot; 29.08.26 &middot; Cava dell'Erba / Stilmarmo, Apricena, Puglia">
+<meta property="og:type" content="website">
+
+<!--
+  IL MARCHIO NON APPARE, VIENE CAVATO.  Direzione: reparto Motion, 03/09/2026.
+
+  La versione precedente aveva un difetto strutturale, non di tempi: il blocco
+  era una forma piatta APPOGGIATA sopra una fotografia. Due strati che non si
+  parlano leggono come un segnaposto, non come materia.
+
+  Qui il pittogramma non sta sopra la foto: e' una FINESTRA dentro il buio.
+  Si guarda la notte attraverso il taglio, il taglio si apre, e quando si apre
+  del tutto il buio se ne va e si e' dentro. Il segno diventa il punto di vista.
+
+  Conseguenza tecnica: la massa che si muove NON usa transform ma anima il
+  poligono. Con una transform i figli in position:fixed si ancorerebbero a lei,
+  e la finestra porterebbe con se' la propria immagine invece di scorrere
+  sopra un'immagine ferma. E' la differenza fra una finestra e un adesivo.
+-->
+
+<style>
+@font-face{font-family:'SpaceMono';font-weight:400;font-display:swap;
+           src:url(_a/SpaceMono-Regular.ttf) format('truetype')}
+
+:root{
+  --notte:#0D0D0D; --sabbia:#EED7B8; --ombra:#9C8460; --bruno:#493328;
+  --segnale:#C4361B;
+  --corpo:'SpaceMono',ui-monospace,'SFMono-Regular',Consolas,monospace;
+
+  /* la massa che resta: la parete */
+  --des:polygon(49.726% 0%, 96.267% 6.302%, 100% 77.905%, 37.089% 84.714%);
+
+  /* la massa che se ne va, nelle sue tre posizioni. Le quote vengono dal
+     vettoriale lockato: kerf 13,250 u perpendicolari, poi scorrimento
+     13,250 u lungo il taglio a +77 gradi. */
+  --sin-chiuso:polygon(13.517% -4.901%, 49.728% 0.001%, 37.089% 84.715%, 16.627% 86.929%);
+  --sin-filo:  polygon(2.536% -8.825%, 38.747% -3.923%, 26.108% 80.791%, 5.646% 83.005%);
+  --sin-fine:  polygon(0% 8.170%, 36.211% 13.072%, 23.572% 97.786%, 3.110% 100%);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+html{background:#000}
+body{background:#000;color:var(--sabbia);font-family:var(--corpo);
+     overflow:hidden;-webkit-font-smoothing:antialiased}
+
+/* ── la notte, e la sua velatura misurata ────────────────────────────────
+   Zoom 1,32 con origine al 70%: al centro dello schermo arriva cio' che
+   stava al 54,9% della foto, cioe' la folla. Velatura 45%->62%: nell'impronta
+   del marchio l'area sotto i 3:1 e' ZERO, 99o percentile 4,57:1.          */
+.notte,.vetro{position:fixed;inset:0;
+  background:url(_a/cava-29.jpg) center/cover no-repeat;
+  transform:scale(1.32);transform-origin:center 70%}
+.notte::after,.vetro::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(7,7,7,.45) 0%,rgba(7,7,7,.62) 100%)}
+.notte{z-index:0}
+
+/* il buio che copre tutto, e che il taglio porta via */
+.buio{position:fixed;inset:0;z-index:1;background:#000;
+      animation:apri 900ms 1120ms cubic-bezier(.33,0,.2,1) forwards}
+@keyframes apri{99%{opacity:0;visibility:visible}
+                100%{opacity:0;visibility:hidden}}
+
+/* ── la finestra: il pittogramma come punto di vista ─────────────────────
+   Niente transform sul contenitore, altrimenti i .vetro in position:fixed si
+   ancorano a lui e la finestra si porta dietro la propria immagine.
+
+   IL RIQUADRO CONTROMUOVE. Chiuso, l'ingombro del blocco ha baricentro in
+   56,758 / 41,014; aperto in 50 / 50. Se il riquadro sta fermo, il blocco
+   tagliato esce dal centro. Quindi left e top seguono il baricentro sulla
+   stessa timeline, e il pezzo resta centrato in ogni istante.
+   Si animano left/top e non transform per la ragione di sopra: costa un
+   ricalcolo di layout, ma e' un riquadro piccolo per 1 secondo.            */
+.finestra{position:fixed;z-index:2;
+  width:min(38vw,320px);aspect-ratio:117.565/75.963;
+  left:calc(50% - min(38vw,320px) * .56759);
+  top:calc(50% - min(38vw,320px) * .26500);
+  animation:centra 1000ms linear forwards,
+            chiudi 900ms 1120ms cubic-bezier(.33,0,.2,1) forwards}
+@keyframes centra{
+  0%  {left:calc(50% - min(38vw,320px) * .56759);
+       top:calc(50% - min(38vw,320px) * .26500);
+       animation-timing-function:linear}
+  20% {left:calc(50% - min(38vw,320px) * .56759);
+       top:calc(50% - min(38vw,320px) * .26500);
+       animation-timing-function:cubic-bezier(.15,.85,.35,1)}
+  38% {left:calc(50% - min(38vw,320px) * .51268);
+       top:calc(50% - min(38vw,320px) * .24517);
+       animation-timing-function:linear}
+  45% {left:calc(50% - min(38vw,320px) * .51268);
+       top:calc(50% - min(38vw,320px) * .24517);
+       animation-timing-function:cubic-bezier(.28,.55,.12,1)}
+  100%{left:calc(50% - min(38vw,320px) * .5);
+       top:calc(50% - min(38vw,320px) * .32306)}}
+/* quando il buio se n'e' andato la finestra mostra la stessa identica
+   immagine del fondo: sparisce senza che si veda, ed esce dalla
+   composizione per non tenere tre sfondi accesi a riposo. */
+@keyframes chiudi{99%{opacity:0;visibility:visible}
+                  100%{opacity:0;visibility:hidden}}
+
+.lastra{position:absolute;inset:0}
+.lastra.dx{clip-path:var(--des)}
+/* IL TAGLIO — un colpo secco, poi il peso. Prima era uno scivolamento unico
+   e per questo non leggeva come un taglio: 180ms di filo che apre, 70ms in
+   cui non succede niente perche' il taglio e' fatto, e poi 550ms di massa
+   che scende con la sua inerzia. La pausa in mezzo e' cio' che separa
+   l'evento dalla conseguenza. */
+.lastra.sx{clip-path:var(--sin-chiuso);
+           animation:scava 1000ms linear forwards}
+@keyframes scava{
+  0%  {clip-path:var(--sin-chiuso);animation-timing-function:linear}
+  20% {clip-path:var(--sin-chiuso);animation-timing-function:cubic-bezier(.15,.85,.35,1)}
+  38% {clip-path:var(--sin-filo);  animation-timing-function:linear}
+  45% {clip-path:var(--sin-filo);  animation-timing-function:cubic-bezier(.28,.55,.12,1)}
+  100%{clip-path:var(--sin-fine)}}
+
+/* ── il nome. Non si muove: viene scoperto dallo stesso taglio, a +77 gradi.
+   Su 100vh d'altezza lo scarto orizzontale e' 23,09vh = tan(13 gradi).    */
+.nome{position:fixed;inset:0;z-index:3;display:grid;place-items:center;
+      clip-path:polygon(0 0,calc(-30vh + 23.09vh) 0,-30vh 100%,0 100%);
+      animation:scopri 620ms 1240ms cubic-bezier(.16,1,.3,1) forwards}
+@keyframes scopri{to{clip-path:polygon(0 0,calc(150vw + 23.09vh) 0,150vw 100%,0 100%)}}
+
+.centro{display:flex;flex-direction:column;align-items:center;
+        gap:clamp(14px,2.2vh,22px);text-align:center}
+.marchio{width:min(56vw,400px);height:auto;display:block}
+.dati{font-size:clamp(.66rem,1.85vw,.78rem);letter-spacing:.16em;
+      text-transform:uppercase;color:var(--sabbia);line-height:2.1}
+.dati b{font-weight:400;color:var(--ombra)}
+.numero{color:var(--segnale)}
+
+/* ── i quattro angoli: si ACCENDONO, non entrano ────────────────────────── */
+.foglio{position:fixed;inset:0;z-index:4;
+        display:flex;flex-direction:column;justify-content:space-between;
+        padding:clamp(26px,5vw,54px);pointer-events:none}
+.foglio a{pointer-events:auto}
+.alto,.basso{display:flex;justify-content:space-between;gap:20px}
+.alto{align-items:flex-start}
+.basso{align-items:flex-end;flex-wrap:wrap}
+.edizione,.luogo,a.ig,.stato span{opacity:0;
+        animation:accendi 300ms 1980ms ease-out forwards}
+/* le due righe di stato sono un elenco, e un elenco ha un ordine di lettura:
+   e' l'unico sfalsamento ammesso in tutto il pezzo. */
+.stato span:nth-child(2){animation-delay:2040ms}
+@keyframes accendi{to{opacity:1}}
+
+.edizione{font-size:clamp(.62rem,1.6vw,.72rem);letter-spacing:.34em;
+          text-transform:uppercase;color:var(--ombra)}
+.stato{font-size:clamp(.6rem,1.5vw,.68rem);letter-spacing:.2em;
+       text-transform:uppercase;color:var(--bruno);text-align:right;line-height:1.9}
+.stato span{display:block}
+.luogo{font-size:clamp(.62rem,1.6vw,.72rem);letter-spacing:.14em;
+       color:var(--ombra);line-height:1.9}
+a.ig{font-size:clamp(.66rem,1.7vw,.76rem);letter-spacing:.18em;
+     text-transform:uppercase;color:var(--sabbia);text-decoration:none;
+     border-bottom:1px solid var(--bruno);padding-bottom:5px;
+     transition:border-color .25s}
+a.ig:hover,a.ig:focus-visible{border-color:var(--sabbia);outline:none}
+
+@media (max-width:620px){
+  .finestra{width:76vw;
+            left:calc(50% - 76vw * .56759);
+            top:calc(50% - 76vw * .26500)}
+  @keyframes centra{
+    0%  {left:calc(50% - 76vw * .56759);top:calc(50% - 76vw * .26500);
+         animation-timing-function:linear}
+    20% {left:calc(50% - 76vw * .56759);top:calc(50% - 76vw * .26500);
+         animation-timing-function:cubic-bezier(.15,.85,.35,1)}
+    38% {left:calc(50% - 76vw * .51268);top:calc(50% - 76vw * .24517);
+         animation-timing-function:linear}
+    45% {left:calc(50% - 76vw * .51268);top:calc(50% - 76vw * .24517);
+         animation-timing-function:cubic-bezier(.28,.55,.12,1)}
+    100%{left:calc(50% - 76vw * .5);top:calc(50% - 76vw * .32306)}}
+  .marchio{width:74vw}
+  .alto,.basso{flex-direction:column;align-items:flex-start}
+  .stato{text-align:left}
+}
+/* reduced-motion non e' «piu' corta»: e' ferma. */
+@media (prefers-reduced-motion:reduce){
+  .buio,.finestra{display:none}
+  .nome{animation:none;clip-path:none}
+  .edizione,.luogo,a.ig,.stato span{animation:none;opacity:1}
+}
+</style></head><body>
+
+<div class="notte"></div>
+<div class="buio"></div>
+
+<!-- il pittogramma non e' una forma sopra la foto: e' la finestra da cui
+     si guarda. Le lastre ritagliano, il vetro dentro sta fermo. -->
+<div class="finestra">
+  <div class="lastra dx"><i class="vetro"></i></div>
+  <div class="lastra sx"><i class="vetro"></i></div>
+</div>
+
+<div class="nome"><div class="centro">
+  <img class="marchio" src="_a/logo.svg" alt="CLUBBIN&rsquo;CAVA">
+  <p class="dati">
+    29 . 08 . 26<br>
+    <b>prima edizione</b> &middot; <span class="numero">4.739</span> <b>registrazioni</b>
+  </p>
+</div></div>
+
+<div class="foglio">
+  <div class="alto">
+    <p class="edizione">CC026</p>
+    <p class="stato">
+      <span>Il sito &egrave; in costruzione</span>
+      <span>La notte no, quella &egrave; gi&agrave; successa</span>
+    </p>
+  </div>
+  <div class="basso">
+    <p class="luogo">
+      Cava dell&rsquo;Erba / Stilmarmo<br>
+      Apricena, Puglia
+    </p>
+    <a class="ig" href="https://instagram.com/clubbincava" rel="noopener">Instagram &rarr;</a>
+  </div>
+</div>
+</body></html>
