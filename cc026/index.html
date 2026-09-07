@@ -92,10 +92,15 @@ main{max-width:var(--colonna);margin:0 auto;padding:0 20px 90px}
   align-items:center; justify-content:space-between; padding:0 16px;
   font-size:12px; letter-spacing:.14em; color:var(--ombra);
 }
-#lettura button{
+#lettura button,#lettura .tasto{
   background:transparent; border:0; color:var(--sabbia); cursor:pointer;
   font-family:inherit; font-size:13px; letter-spacing:.14em; padding:10px 12px;
+  text-decoration:none;
 }
+.azioni{display:flex;align-items:center;gap:4px}
+/* il file scaricato porta il marchio impresso: si dice, non si scopre dopo */
+#scarica{border:1px solid rgba(238,215,184,.4);padding:9px 16px;border-radius:2px}
+#scarica:hover,#scarica:focus-visible{border-color:var(--sabbia);background:rgba(238,215,184,.08)}
 #lettura .nav{
   position:fixed; bottom:0; left:0; right:0; height:74px; display:flex;
   align-items:center; justify-content:center; gap:26px;
@@ -129,13 +134,17 @@ footer a:hover{border-bottom-color:var(--sabbia)}
 <footer>
   Fotografie di <a href="https://lucagrigolato.it/clubbincava/" target="_blank" rel="noreferrer">Luca Grigolato</a><br>
   <a href="https://www.instagram.com/clubbincava/" target="_blank" rel="noreferrer">@clubbincava</a><br>
+  Le foto scaricate portano il marchio in basso.<br>
   <a href="../">&larr; torna all&rsquo;ingresso</a>
 </footer>
 
 <div id="lettura" aria-modal="true" role="dialog" aria-label="Fotografia a schermo intero">
   <div class="barra">
     <span id="pos"></span>
-    <button id="chiudi" aria-label="Chiudi">CHIUDI &times;</button>
+    <span class="azioni">
+      <a id="scarica" class="tasto" download>SCARICA</a>
+      <button id="chiudi" aria-label="Chiudi">CHIUDI &times;</button>
+    </span>
   </div>
   <img id="grande" alt="">
   <div class="nav">
@@ -170,7 +179,11 @@ footer a:hover{border-bottom-color:var(--sabbia)}
     if (!foto.length) return;
     i = (k + foto.length) % foto.length;
     var f = foto[i];
-    grande.src = '_f/' + String(f.n).padStart(3,'0') + '.jpg';
+    var nn = String(f.n).padStart(3,'0');
+    grande.src = '_f/' + nn + '.jpg';
+    var sc = document.getElementById('scarica');
+    sc.href = '_d/' + nn + '.jpg';                       // versione alta, col marchio
+    sc.setAttribute('download', 'clubbincava-cc026-' + nn + '.jpg');
     pos.textContent = (i + 1) + ' / ' + foto.length;
     lettura.classList.add('on');
     document.body.style.overflow = 'hidden';
