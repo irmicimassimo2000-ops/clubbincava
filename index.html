@@ -145,6 +145,11 @@ body{background:#000;color:var(--sabbia);font-family:var(--corpo);
 .basso{align-items:flex-end;flex-wrap:wrap}
 .edizione,.luogo,a.ig,.stato span{opacity:0;
         animation:accendi 300ms 1980ms ease-out forwards}
+/* due porte, non una: la galleria e' l'unica stanza aperta e va detto qui,
+   dove finora c'era solo il rimando al profilo. */
+.porte{display:flex;gap:clamp(18px,4vw,34px);align-items:flex-end;flex-wrap:wrap}
+a.ig.foto{color:var(--sabbia);border-bottom-color:var(--ombra)}
+a.ig.foto:hover,a.ig.foto:focus-visible{border-color:var(--sabbia)}
 /* le due righe di stato sono un elenco, e un elenco ha un ordine di lettura:
    e' l'unico sfalsamento ammesso in tutto il pezzo. */
 .stato span:nth-child(2){animation-delay:2040ms}
@@ -220,7 +225,10 @@ a.ig:hover,a.ig:focus-visible{border-color:var(--sabbia);outline:none}
       Cava dell&rsquo;Erba / Stilmarmo<br>
       Apricena, Puglia
     </p>
-    <a class="ig" href="https://instagram.com/clubbincava" rel="noopener">Instagram &rarr;</a>
+    <p class="porte">
+      <a class="ig foto" href="/cc026/">Le foto della notte &rarr;</a>
+      <a class="ig" href="https://instagram.com/clubbincava" rel="noopener">Instagram &rarr;</a>
+    </p>
   </div>
 </div>
 </body></html>

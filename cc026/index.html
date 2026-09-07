@@ -1,0 +1,219 @@
+<!doctype html><html lang="it"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>CC026 &middot; la prima edizione &mdash; CLUBBIN&rsquo;CAVA</title>
+<meta name="description" content="Le fotografie della prima edizione di CLUBBIN'CAVA. 29 agosto 2026, Cava dell'Erba, Apricena.">
+<link rel="icon" href="data:,">
+<meta property="og:title" content="CC026 &middot; la prima edizione">
+<meta property="og:description" content="Le fotografie del 29 agosto 2026 &middot; Cava dell'Erba, Apricena">
+<meta property="og:image" content="https://clubbincava.it/_m/cc026/01.jpg">
+<meta property="og:type" content="website">
+
+<!--
+  L'UNICA STANZA APERTA.
+
+  Il sito e' in costruzione e lo dice. Questa pagina non e' un'eccezione
+  nascosta: e' dichiarata come l'unica cosa che esiste, perche' l'archivio di
+  un'edizione e' la sola cosa che a settembre 2026 puo' essere vera.
+
+  La griglia e' di scatti VERTICALI: 153 su 169. I sedici orizzontali stanno
+  nella stessa cella e si aprono interi nella lettura, invece di rompere il
+  ritmo con celle doppie.
+-->
+
+<style>
+@font-face{font-family:Mono;src:url(../_a/SpaceMono-Regular.ttf) format('truetype');font-display:swap}
+
+:root{
+  --sabbia:#EED7B8; --notte:#0D0D0D; --ombra:#9C8460; --bruno:#4C3322;
+  --colonna:1180px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{background:var(--notte);-webkit-text-size-adjust:100%}
+body{
+  background:var(--notte); color:var(--sabbia);
+  font-family:Mono,ui-monospace,SFMono-Regular,Menlo,monospace;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+a{color:inherit}
+
+/* ── testata ─────────────────────────────────────────────────────────── */
+header{max-width:var(--colonna);margin:0 auto;padding:clamp(38px,7vw,72px) 20px 0}
+.marchio{width:min(340px,62vw);display:block}
+.riga{
+  margin-top:26px; font-size:12px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--ombra); line-height:1.7;
+}
+h1{
+  margin-top:18px; font-size:clamp(30px,7.2vw,54px); line-height:1.02;
+  letter-spacing:-.01em; font-weight:400;
+}
+.cantiere{
+  margin-top:24px; display:flex; align-items:flex-start; gap:12px;
+  border-top:2px solid rgba(238,215,184,.22); padding-top:18px;
+  font-size:13px; line-height:1.65; color:var(--ombra); max-width:56ch;
+}
+.cantiere b{color:var(--sabbia);font-weight:400}
+.conta{
+  margin:34px 0 22px; font-size:12px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--ombra);
+}
+
+/* ── la griglia ──────────────────────────────────────────────────────── */
+main{max-width:var(--colonna);margin:0 auto;padding:0 20px 90px}
+.griglia{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+@media(min-width:640px){.griglia{grid-template-columns:repeat(3,1fr);gap:10px}}
+@media(min-width:960px){.griglia{grid-template-columns:repeat(4,1fr);gap:12px}}
+.cella{
+  position:relative; aspect-ratio:2/3; overflow:hidden; background:#151311;
+  border:0; padding:0; cursor:pointer; display:block;
+}
+.cella img{width:100%;height:100%;object-fit:cover;display:block;
+           transition:transform .5s cubic-bezier(.2,.7,.2,1),opacity .4s}
+.cella:hover img,.cella:focus-visible img{transform:scale(1.045)}
+.cella:focus-visible{outline:2px solid var(--sabbia);outline-offset:2px}
+.cella::after{
+  content:attr(data-n); position:absolute; left:8px; bottom:6px;
+  font-size:10px; letter-spacing:.1em; color:var(--sabbia);
+  opacity:0; transition:opacity .25s; text-shadow:0 1px 6px rgba(0,0,0,.9);
+}
+.cella:hover::after,.cella:focus-visible::after{opacity:.85}
+
+/* ── la lettura ──────────────────────────────────────────────────────── */
+#lettura{
+  position:fixed; inset:0; z-index:50; background:rgba(8,8,8,.975);
+  display:none; align-items:center; justify-content:center; padding:56px 16px 76px;
+}
+#lettura.on{display:flex}
+#lettura img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+#lettura .barra{
+  position:fixed; left:0; right:0; top:0; height:56px; display:flex;
+  align-items:center; justify-content:space-between; padding:0 16px;
+  font-size:12px; letter-spacing:.14em; color:var(--ombra);
+}
+#lettura button{
+  background:transparent; border:0; color:var(--sabbia); cursor:pointer;
+  font-family:inherit; font-size:13px; letter-spacing:.14em; padding:10px 12px;
+}
+#lettura .nav{
+  position:fixed; bottom:0; left:0; right:0; height:74px; display:flex;
+  align-items:center; justify-content:center; gap:26px;
+}
+#lettura .nav button{border:2px solid rgba(238,215,184,.3);padding:11px 26px}
+#lettura .nav button:hover{border-color:var(--sabbia)}
+
+/* ── il piede ────────────────────────────────────────────────────────── */
+footer{
+  max-width:var(--colonna); margin:0 auto; padding:0 20px 70px;
+  border-top:2px solid rgba(238,215,184,.16); padding-top:26px;
+  font-size:12px; letter-spacing:.1em; line-height:2; color:var(--ombra);
+}
+footer a{color:var(--sabbia);text-decoration:none;border-bottom:1px solid rgba(238,215,184,.35)}
+footer a:hover{border-bottom-color:var(--sabbia)}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head><body>
+
+<header>
+  <img class="marchio" src="../_a/logo.svg" alt="CLUBBIN&rsquo;CAVA">
+  <div class="riga">CC026 &middot; 29 agosto 2026 &middot; Cava dell&rsquo;Erba, Apricena</div>
+  <h1>La prima edizione,<br>una fotografia alla volta.</h1>
+  <div class="cantiere">
+    <span>&mdash;</span>
+    <span><b>Il sito e&rsquo; in costruzione.</b> Questa e&rsquo; l&rsquo;unica stanza aperta:
+    l&rsquo;archivio della notte del 29 agosto. Il resto arriva quando c&rsquo;e&rsquo;
+    qualcosa di vero da metterci dentro.</span>
+  </div>
+  <div class="conta" id="conta">&nbsp;</div>
+</header>
+
+<main><div class="griglia" id="griglia"></div></main>
+
+<footer>
+  Fotografie di <a href="https://lucagrigolato.it/clubbincava/" target="_blank" rel="noreferrer">Luca Grigolato</a><br>
+  <a href="https://www.instagram.com/clubbincava/" target="_blank" rel="noreferrer">@clubbincava</a><br>
+  <a href="../">&larr; torna all&rsquo;ingresso</a>
+</footer>
+
+<div id="lettura" aria-modal="true" role="dialog" aria-label="Fotografia a schermo intero">
+  <div class="barra">
+    <span id="pos"></span>
+    <button id="chiudi" aria-label="Chiudi">CHIUDI &times;</button>
+  </div>
+  <img id="grande" alt="">
+  <div class="nav">
+    <button id="prec" aria-label="Precedente">&larr;</button>
+    <button id="succ" aria-label="Successiva">&rarr;</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var griglia = document.getElementById('griglia');
+  var lettura = document.getElementById('lettura');
+  var grande  = document.getElementById('grande');
+  var pos     = document.getElementById('pos');
+  var foto = [], i = 0;
+
+  fetch('foto.json').then(function(r){ return r.json(); }).then(function(d){
+    foto = d;
+    document.getElementById('conta').textContent = d.length + ' fotografie';
+    var h = '';
+    d.forEach(function(f, k){
+      h += '<button class="cella" data-k="' + k + '" data-n="' + f.n + '" ' +
+           'aria-label="Apri la fotografia ' + f.n + '">' +
+           '<img src="_f/' + String(f.n).padStart(3,'0') + '_m.jpg" ' +
+           'alt="CLUBBIN’CAVA, 29 agosto 2026" loading="lazy" decoding="async" ' +
+           'width="660" height="990"></button>';
+    });
+    griglia.innerHTML = h;
+  });
+
+  function apri(k){
+    if (!foto.length) return;
+    i = (k + foto.length) % foto.length;
+    var f = foto[i];
+    grande.src = '_f/' + String(f.n).padStart(3,'0') + '.jpg';
+    pos.textContent = (i + 1) + ' / ' + foto.length;
+    lettura.classList.add('on');
+    document.body.style.overflow = 'hidden';
+    // precarica la prossima: sfogliare non deve aspettare
+    var p = foto[(i + 1) % foto.length];
+    new Image().src = '_f/' + String(p.n).padStart(3,'0') + '.jpg';
+  }
+  function chiudi(){
+    lettura.classList.remove('on');
+    document.body.style.overflow = '';
+    grande.src = '';
+  }
+
+  griglia.addEventListener('click', function(e){
+    var b = e.target.closest('.cella');
+    if (b) apri(parseInt(b.dataset.k, 10));
+  });
+  document.getElementById('chiudi').addEventListener('click', chiudi);
+  document.getElementById('prec').addEventListener('click', function(){ apri(i - 1); });
+  document.getElementById('succ').addEventListener('click', function(){ apri(i + 1); });
+  lettura.addEventListener('click', function(e){ if (e.target === lettura) chiudi(); });
+
+  document.addEventListener('keydown', function(e){
+    if (!lettura.classList.contains('on')) return;
+    if (e.key === 'Escape') chiudi();
+    else if (e.key === 'ArrowLeft') apri(i - 1);
+    else if (e.key === 'ArrowRight') apri(i + 1);
+  });
+
+  // scorrimento col dito, che e' come la guardera' quasi tutta la gente
+  var x0 = null;
+  lettura.addEventListener('touchstart', function(e){ x0 = e.touches[0].clientX; }, {passive:true});
+  lettura.addEventListener('touchend', function(e){
+    if (x0 === null) return;
+    var d = e.changedTouches[0].clientX - x0;
+    if (Math.abs(d) > 55) apri(i + (d < 0 ? 1 : -1));
+    x0 = null;
+  }, {passive:true});
+})();
+</script>
+</body></html>
