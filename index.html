@@ -140,7 +140,7 @@ body{background:#000;color:var(--sabbia);font-family:var(--corpo);
         display:flex;flex-direction:column;justify-content:space-between;
         padding:clamp(26px,5vw,54px);pointer-events:none}
 /* la banda occupa il fondo: gli angoli bassi si alzano per non finirci sotto */
-.foglio{padding-bottom:calc(clamp(26px,5vw,54px) + clamp(96px,15vw,132px))}
+.foglio{padding-bottom:calc(clamp(26px,5vw,54px) + clamp(128px,19vw,178px))}
 .foglio a{pointer-events:auto}
 .alto,.basso{display:flex;justify-content:space-between;gap:20px}
 .alto{align-items:flex-start}
@@ -149,30 +149,60 @@ body{background:#000;color:var(--sabbia);font-family:var(--corpo);
         animation:accendi 300ms 1980ms ease-out forwards}
 /* la banda della galleria: sta fuori dal flusso alto/basso perche' non e'
    un angolo, e' una porta. Sale dal fondo dopo che il marchio si e' aperto. */
+/* Non una barra: una vetrina. Le quattro miniature dicono cosa c'e' dietro
+   prima che uno legga la scritta — una CTA di galleria si guarda, non si
+   legge. Il fondo torna notte perche' le foto vogliono il buio intorno;
+   il filo sabbia in cima porta il taglio a 77 gradi del pack. */
 .banda{
   position:fixed; left:0; right:0; bottom:0; z-index:6;
-  display:flex; align-items:center; gap:clamp(14px,3vw,28px);
-  padding:clamp(20px,3.4vw,30px) clamp(26px,5vw,54px)
-          calc(clamp(20px,3.4vw,30px) + env(safe-area-inset-bottom,0px));
-  background:var(--sabbia); color:var(--bruno); text-decoration:none;
-  pointer-events:auto;
-  clip-path:polygon(0 34px, 100% 0, 100% 100%, 0 100%);
+  display:flex; align-items:center; gap:clamp(14px,2.6vw,26px);
+  padding:clamp(14px,2vw,18px) clamp(20px,4vw,40px)
+          calc(clamp(14px,2vw,18px) + env(safe-area-inset-bottom,0px));
+  background:#100F0E; color:var(--sabbia); text-decoration:none;
+  pointer-events:auto; overflow:visible;
   transform:translateY(101%);
   animation:sale 620ms 2100ms cubic-bezier(.16,1,.3,1) forwards;
 }
 @keyframes sale{to{transform:translateY(0)}}
-.banda-t{font-size:clamp(1rem,3.1vw,1.32rem);letter-spacing:.14em;
-         text-transform:uppercase;font-weight:400}
-.banda-s{font-size:clamp(.62rem,1.7vw,.74rem);letter-spacing:.16em;
-         text-transform:uppercase;opacity:.62;margin-left:auto;text-align:right}
-.banda-f{font-size:clamp(1rem,3vw,1.3rem);transition:transform .3s cubic-bezier(.2,.7,.2,1)}
-.banda:hover .banda-f,.banda:focus-visible .banda-f{transform:translateX(7px)}
-.banda:focus-visible{outline:3px solid var(--notte);outline-offset:-6px}
-@media (max-width:620px){
-  .banda{flex-wrap:wrap;gap:4px 14px}
-  .banda-s{margin-left:0;width:100%;text-align:left;order:3}
-  .banda-f{margin-left:auto}
+/* il filo, tagliato all'angolo del marchio */
+.banda::before{content:"";position:absolute;left:0;right:0;top:0;height:38px;
+  background:var(--sabbia);clip-path:polygon(0 34px,100% 0,100% 3px,0 37px);z-index:1}
+
+/* le miniature SCAVALCANO il filo: escono dal taglio invece di stargli sotto.
+   Salgono a scaletta seguendo la pendenza della linea, cosi' il gruppo la
+   cavalca invece di attraversarla a caso. */
+.prov{display:flex;gap:6px;flex:0 0 auto;align-items:flex-end;position:relative;z-index:2}
+.prov img{
+  width:clamp(46px,7.6vw,62px); height:clamp(74px,12.4vw,102px);
+  object-fit:cover; display:block; background:#1a1714;
+  box-shadow:0 -2px 14px rgba(0,0,0,.55);
+  transition:transform .45s cubic-bezier(.2,.7,.2,1);
 }
+.prov img:nth-child(1){transform:translateY(-30px)}
+.prov img:nth-child(2){transform:translateY(-36px);transition-delay:.03s}
+.prov img:nth-child(3){transform:translateY(-42px);transition-delay:.06s}
+.prov img:nth-child(4){transform:translateY(-48px);transition-delay:.09s}
+.banda:hover .prov img:nth-child(1),.banda:focus-visible .prov img:nth-child(1){transform:translateY(-38px)}
+.banda:hover .prov img:nth-child(2),.banda:focus-visible .prov img:nth-child(2){transform:translateY(-44px)}
+.banda:hover .prov img:nth-child(3),.banda:focus-visible .prov img:nth-child(3){transform:translateY(-50px)}
+.banda:hover .prov img:nth-child(4),.banda:focus-visible .prov img:nth-child(4){transform:translateY(-56px)}
+
+.banda-x{display:flex;flex-direction:column;gap:6px;min-width:0}
+.banda-t{font-size:clamp(.94rem,2.8vw,1.24rem);letter-spacing:.14em;
+         text-transform:uppercase;font-weight:400;color:var(--sabbia)}
+.banda-s{font-size:clamp(.6rem,1.6vw,.72rem);letter-spacing:.16em;
+         text-transform:uppercase;color:var(--ombra)}
+.banda-f{margin-left:auto;font-size:clamp(1.1rem,3vw,1.4rem);color:var(--sabbia);
+         transition:transform .3s cubic-bezier(.2,.7,.2,1)}
+.banda:hover .banda-f,.banda:focus-visible .banda-f{transform:translateX(8px)}
+.banda:focus-visible{outline:2px solid var(--sabbia);outline-offset:-5px}
+@media (max-width:560px){
+  .piu{display:none}
+  .banda{gap:12px;padding-left:16px;padding-right:16px}
+  .banda-t{letter-spacing:.08em;line-height:1.15}
+}
+@media (max-width:520px){ .prov img:nth-child(4){display:none} }
+@media (max-width:400px){ .prov img:nth-child(3){display:none} }
 /* le due righe di stato sono un elenco, e un elenco ha un ordine di lettura:
    e' l'unico sfalsamento ammesso in tutto il pezzo. */
 .stato span:nth-child(2){animation-delay:2040ms}
@@ -215,6 +245,7 @@ a.ig:hover,a.ig:focus-visible{border-color:var(--sabbia);outline:none}
   .nome{animation:none;clip-path:none}
   .edizione,.luogo,a.ig,.stato span{animation:none;opacity:1}
   .banda{animation:none;transform:none}
+  .prov img{transition:none}
 }
 </style></head><body>
 
@@ -256,9 +287,17 @@ a.ig:hover,a.ig:focus-visible{border-color:var(--sabbia);outline:none}
        Campo sabbia pieno: e' l'unico blocco chiaro della pagina, quindi
        l'occhio ci cade da solo senza che serva gridare. Il bordo alto porta
        il taglio a 77 gradi del pack, lo stesso del marchio. -->
-  <a class="banda" href="/cc026/">
-    <span class="banda-t">Le foto della notte</span>
-    <span class="banda-s">169 fotografie &middot; prima edizione</span>
+  <a class="banda" href="/cc026/" aria-label="Apri la galleria: 169 fotografie della prima edizione">
+    <span class="prov" aria-hidden="true">
+      <img src="_a/prev/112.jpg" alt="" width="260" height="390" loading="lazy" decoding="async">
+      <img src="_a/prev/136.jpg" alt="" width="260" height="390" loading="lazy" decoding="async">
+      <img src="_a/prev/149.jpg" alt="" width="260" height="390" loading="lazy" decoding="async">
+      <img src="_a/prev/169.jpg" alt="" width="260" height="390" loading="lazy" decoding="async">
+    </span>
+    <span class="banda-x">
+      <span class="banda-t">Le foto della notte</span>
+      <span class="banda-s">169 fotografie<span class="piu"> &middot; prima edizione</span></span>
+    </span>
     <span class="banda-f" aria-hidden="true">&rarr;</span>
   </a>
 </div>
