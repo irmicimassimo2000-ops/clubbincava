@@ -139,8 +139,8 @@ body{background:#000;color:var(--sabbia);font-family:var(--corpo);
 .foglio{position:fixed;inset:0;z-index:4;
         display:flex;flex-direction:column;justify-content:space-between;
         padding:clamp(26px,5vw,54px);pointer-events:none}
-/* la banda occupa il fondo: gli angoli bassi si alzano per non finirci sotto */
-.foglio{padding-bottom:calc(clamp(26px,5vw,54px) + clamp(128px,19vw,178px))}
+/* la banda occupa la testa: gli angoli alti scendono per non finirci sotto */
+.foglio{padding-top:calc(clamp(26px,5vw,54px) + clamp(158px,24vw,232px))}
 .foglio a{pointer-events:auto}
 .alto,.basso{display:flex;justify-content:space-between;gap:20px}
 .alto{align-items:flex-start}
@@ -148,51 +148,67 @@ body{background:#000;color:var(--sabbia);font-family:var(--corpo);
 .edizione,.luogo,a.ig,.stato span{opacity:0;
         animation:accendi 300ms 1980ms ease-out forwards}
 /* la banda della galleria: sta fuori dal flusso alto/basso perche' non e'
-   un angolo, e' una porta. Sale dal fondo dopo che il marchio si e' aperto. */
+   un angolo, e' una porta. Scende dalla testa dopo che il marchio si e'
+   aperto: e' la prima cosa che c'e', non l'ultima. */
 /* Non una barra: una vetrina. Le quattro miniature dicono cosa c'e' dietro
    prima che uno legga la scritta — una CTA di galleria si guarda, non si
-   legge. Il fondo torna notte perche' le foto vogliono il buio intorno;
-   il filo sabbia in cima porta il taglio a 77 gradi del pack. */
+   legge. Il fondo e' notte perche' le foto vogliono il buio intorno.
+   Il TAGLIO E' PIENO: non un filo appoggiato sopra, ma il bordo stesso del
+   campo, che scende a sinistra e sale a destra come il taglio del marchio.
+   L'angolo non e' i 77 gradi veri del pack — su una banda larga quanto lo
+   schermo scenderebbe di 300 px e mangerebbe la pagina: e' la stessa
+   direzione, schiacciata sulla proporzione della banda. */
 .banda{
-  position:fixed; left:0; right:0; bottom:0; z-index:6;
+  --taglio:clamp(54px,7.2vw,92px);
+  position:fixed; left:0; right:0; top:0; z-index:6;
   display:flex; align-items:center; gap:clamp(14px,2.6vw,26px);
-  padding:clamp(14px,2vw,18px) clamp(20px,4vw,40px)
-          calc(clamp(14px,2vw,18px) + env(safe-area-inset-bottom,0px));
-  background:#100F0E; color:var(--sabbia); text-decoration:none;
+  padding:calc(clamp(14px,2vw,18px) + env(safe-area-inset-top,0px))
+          clamp(20px,4vw,40px) clamp(14px,2vw,18px);
+  color:var(--sabbia); text-decoration:none;
   pointer-events:auto; overflow:visible;
-  transform:translateY(101%);
-  animation:sale 620ms 2100ms cubic-bezier(.16,1,.3,1) forwards;
+  transform:translateY(-101%);
+  animation:scende 620ms 2100ms cubic-bezier(.16,1,.3,1) forwards;
 }
-@keyframes sale{to{transform:translateY(0)}}
-/* il filo, tagliato all'angolo del marchio */
-.banda::before{content:"";position:absolute;left:0;right:0;top:0;height:38px;
-  background:var(--sabbia);clip-path:polygon(0 34px,100% 0,100% 3px,0 37px);z-index:1}
+@keyframes scende{to{transform:translateY(0)}}
+/* il campo, col bordo basso tagliato */
+.banda::before{content:"";position:absolute;left:0;right:0;top:0;bottom:calc(-1 * var(--taglio));
+  background:#100F0E;z-index:0;
+  clip-path:polygon(0 0,100% 0,100% calc(100% - var(--taglio)),0 100%)}
+/* il filo sabbia corre SUL taglio, non sopra al campo */
+.banda::after{content:"";position:absolute;left:0;right:0;top:0;bottom:calc(-1 * var(--taglio));
+  background:var(--sabbia);z-index:1;
+  clip-path:polygon(0 calc(100% - 4px),100% calc(100% - var(--taglio) - 4px),
+                    100% calc(100% - var(--taglio)),0 100%)}
 
-/* le miniature SCAVALCANO il filo: escono dal taglio invece di stargli sotto.
-   Salgono a scaletta seguendo la pendenza della linea, cosi' il gruppo la
-   cavalca invece di attraversarla a caso. */
-.prov{display:flex;gap:6px;flex:0 0 auto;align-items:flex-end;position:relative;z-index:2}
+/* le miniature SCAVALCANO il taglio: escono dal campo invece di stargli
+   dentro. Scendono a scaletta seguendo la pendenza della linea — quella a
+   sinistra puo' scendere di piu' perche' li' il taglio e' piu' basso —
+   cosi' il gruppo la cavalca invece di attraversarla a caso. */
+.prov{display:flex;gap:6px;flex:0 0 auto;align-items:flex-start;position:relative;z-index:2}
 .prov img{
   width:clamp(46px,7.6vw,62px); height:clamp(74px,12.4vw,102px);
   object-fit:cover; display:block; background:#1a1714;
-  box-shadow:0 -2px 14px rgba(0,0,0,.55);
+  box-shadow:0 6px 18px rgba(0,0,0,.6);
   transition:transform .45s cubic-bezier(.2,.7,.2,1);
 }
-.prov img:nth-child(1){transform:translateY(-30px)}
-.prov img:nth-child(2){transform:translateY(-36px);transition-delay:.03s}
-.prov img:nth-child(3){transform:translateY(-42px);transition-delay:.06s}
-.prov img:nth-child(4){transform:translateY(-48px);transition-delay:.09s}
-.banda:hover .prov img:nth-child(1),.banda:focus-visible .prov img:nth-child(1){transform:translateY(-38px)}
-.banda:hover .prov img:nth-child(2),.banda:focus-visible .prov img:nth-child(2){transform:translateY(-44px)}
-.banda:hover .prov img:nth-child(3),.banda:focus-visible .prov img:nth-child(3){transform:translateY(-50px)}
-.banda:hover .prov img:nth-child(4),.banda:focus-visible .prov img:nth-child(4){transform:translateY(-56px)}
+.prov img:nth-child(1){transform:translateY(56px)}
+.prov img:nth-child(2){transform:translateY(48px);transition-delay:.03s}
+.prov img:nth-child(3){transform:translateY(40px);transition-delay:.06s}
+.prov img:nth-child(4){transform:translateY(32px);transition-delay:.09s}
+.banda:hover .prov img:nth-child(1),.banda:focus-visible .prov img:nth-child(1){transform:translateY(66px)}
+.banda:hover .prov img:nth-child(2),.banda:focus-visible .prov img:nth-child(2){transform:translateY(58px)}
+.banda:hover .prov img:nth-child(3),.banda:focus-visible .prov img:nth-child(3){transform:translateY(50px)}
+.banda:hover .prov img:nth-child(4),.banda:focus-visible .prov img:nth-child(4){transform:translateY(42px)}
 
-.banda-x{display:flex;flex-direction:column;gap:6px;min-width:0}
+/* il testo sta SOPRA il campo: senza questo il ::before, che e' posizionato,
+   verrebbe dipinto dopo il contenuto in linea e se lo mangerebbe */
+.banda-x{display:flex;flex-direction:column;gap:6px;min-width:0;position:relative;z-index:2}
 .banda-t{font-size:clamp(.94rem,2.8vw,1.24rem);letter-spacing:.14em;
          text-transform:uppercase;font-weight:400;color:var(--sabbia)}
 .banda-s{font-size:clamp(.6rem,1.6vw,.72rem);letter-spacing:.16em;
          text-transform:uppercase;color:var(--ombra)}
-.banda-f{margin-left:auto;font-size:clamp(1.1rem,3vw,1.4rem);color:var(--sabbia);
+.banda-f{margin-left:auto;position:relative;z-index:2;
+         font-size:clamp(1.1rem,3vw,1.4rem);color:var(--sabbia);
          transition:transform .3s cubic-bezier(.2,.7,.2,1)}
 .banda:hover .banda-f,.banda:focus-visible .banda-f{transform:translateX(8px)}
 .banda:focus-visible{outline:2px solid var(--sabbia);outline-offset:-5px}
@@ -239,6 +255,19 @@ a.ig:hover,a.ig:focus-visible{border-color:var(--sabbia);outline:none}
   .alto,.basso{flex-direction:column;align-items:flex-start}
   .stato{text-align:left}
 }
+/* finestre basse (portatili 13", browser con mille barre): il marchio sta al
+   centro dello schermo e non sa niente della banda, quindi se lo schermo si
+   accorcia gli finisce addosso. La banda si stringe, il taglio si abbassa. */
+@media (max-height:660px){
+  .banda{--taglio:clamp(32px,4.6vw,52px)}
+  .prov img{height:clamp(54px,9vw,72px)}
+  .prov img:nth-child(1){transform:translateY(38px)}
+  .prov img:nth-child(2){transform:translateY(32px)}
+  .prov img:nth-child(3){transform:translateY(26px)}
+  .prov img:nth-child(4){transform:translateY(20px)}
+  .foglio{padding-top:calc(clamp(26px,5vw,54px) + clamp(108px,16vw,146px))}
+}
+
 /* reduced-motion non e' «piu' corta»: e' ferma. */
 @media (prefers-reduced-motion:reduce){
   .buio,.finestra{display:none}
@@ -283,10 +312,10 @@ a.ig:hover,a.ig:focus-visible{border-color:var(--sabbia);outline:none}
     <a class="ig" href="https://instagram.com/clubbincava" rel="noopener">Instagram &rarr;</a>
   </div>
 
-  <!-- L'UNICA COSA CHE SI PUO' FARE QUI DENTRO, e si vede.
-       Campo sabbia pieno: e' l'unico blocco chiaro della pagina, quindi
-       l'occhio ci cade da solo senza che serva gridare. Il bordo alto porta
-       il taglio a 77 gradi del pack, lo stesso del marchio. -->
+  <!-- L'UNICA COSA CHE SI PUO' FARE QUI DENTRO, e sta in testa alla pagina:
+       chi arriva la incontra prima del marchio che si apre, non dopo.
+       Il taglio e' pieno — il bordo del campo, non un filo appoggiato — e le
+       miniature ci escono attraverso, cosi' la porta si vede da fuori. -->
   <a class="banda" href="/cc026/" aria-label="Apri la galleria: 169 fotografie della prima edizione">
     <span class="prov" aria-hidden="true">
       <img src="_a/prev/112.jpg" alt="" width="260" height="390" loading="lazy" decoding="async">
